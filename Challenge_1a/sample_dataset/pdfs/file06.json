@@ -1,0 +1,50 @@
+{
+  "title": "Untitled Document",
+  "outline": [
+    {
+      "level": "H1",
+      "text": "Welcome to the   “Connecting the Dots” Challenge",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "What if every time you opened a PDF, it didn’t just  sit there —it  spoke to you ,",
+      "page": 2
+    },
+    {
+      "level": "H2",
+      "text": "connected ideas , and  narrated meaning  across your entire library?",
+      "page": 2
+    },
+    {
+      "level": "H1",
+      "text": "Round 1A: Understand Your Document",
+      "page": 3
+    },
+    {
+      "level": "H1",
+      "text": "Round 1B: Persona-Driven Document Intelligence",
+      "page": 7
+    },
+    {
+      "level": "H3",
+      "text": "•   Output JSON format: Refer  challenge1b_output.json",
+      "page": 8
+    },
+    {
+      "level": "H1",
+      "text": "Appendix:",
+      "page": 10
+    },
+    {
+      "level": "H1",
+      "text": "https://github.com/jhaaj08/Adobe-India-",
+      "page": 10
+    },
+    {
+      "level": "H1",
+      "text": "Hackathon25.git",
+      "page": 10
+    }
+  ]
+}
