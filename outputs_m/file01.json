@@ -2,13 +2,8 @@
     "title": "Application form for grant of LTC advance",
     "outline": [
         {
-            "level": "H1",
+            "level": "H2",
             "text": "PAY + SI + NPA",
-            "page": 0
-        },
-        {
-            "level": "H1",
-            "text": "12.  Amount of advance required.",
             "page": 0
         }
     ]

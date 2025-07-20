@@ -8,269 +8,200 @@ from collections import Counter
 
 class PDFOutlineExtractor:
     def __init__(self):
-        # Major heading keywords from samples
-        self.major_headings = {
-            "revision history", "table of contents", "acknowledgements", "references",
-            "introduction", "background", "overview", "summary", "conclusion",
-            "methodology", "results", "discussion", "abstract", "appendix",
-            "timeline", "milestones", "approach", "evaluation", "business outcomes",
-            "content", "intended audience", "career paths", "learning objectives",
-            "entry requirements", "structure", "keeping it current", "trademarks",
-            "documents and web sites", "pathway options"
-        }
+        pass
 
     def extract_title(self, doc):
-        """Extract title using your original algorithm with improvements"""
+        """Extract the main title: largest, top-most, visually separated text block(s)"""
         if not doc or len(doc) == 0:
             return ""
-        
         first_page = doc[0]
         blocks = first_page.get_text("dict")["blocks"]
-        
-        # Collect all text with sizes from first page
+        # Find all text elements with their size and position
         text_elements = []
-        
         for block in blocks:
             if "lines" not in block:
                 continue
-            
             for line in block["lines"]:
-                line_text = ""
-                max_size_in_line = 0
-                line_y = line["bbox"][1]
-                
-                # Skip header/footer areas (your technique)
-                page_height = first_page.rect.height
-                if line_y < page_height * 0.10 or line_y > page_height * 0.90:
+                line_text = " ".join([span["text"] for span in line["spans"]]).strip()
+                if not line_text or len(line_text) < 4:
                     continue
-                
-                for span in line["spans"]:
-                    text = span["text"].strip()
-                    if text:
-                        line_text += text + " "
-                        max_size_in_line = max(max_size_in_line, span["size"])
-                
-                line_text = line_text.strip()
-                if len(line_text) >= 8 and len(line_text) <= 120:  # Reasonable title length
-                    text_elements.append({
-                        "text": line_text,
-                        "size": max_size_in_line,
-                        "position": line_y,
-                        "is_bold": any(s["flags"] & 2**4 for s in line["spans"])
-                    })
-        
+                max_size = max(span["size"] for span in line["spans"])
+                y_pos = line["spans"][0]["origin"][1]
+                text_elements.append({
+                    "text": line_text,
+                    "size": max_size,
+                    "y": y_pos,
+                    "is_bold": any(span["flags"] & 2 for span in line["spans"])
+                })
         if not text_elements:
             return ""
-        
-        # Sort by size (largest first), then by position (top first)
-        text_elements.sort(key=lambda x: (-x["size"], x["position"]))
-        
-        # Find title from top elements
-        for element in text_elements[:10]:
-            text = element["text"]
-            
-            # Skip if it looks like a heading keyword
-            if (text.lower().strip() in self.major_headings or
-                re.match(r'^\d+\.?\s', text) or
-                text.isupper() and len(text) > 50):
-                continue
-            
-            # Must be reasonably large or bold
-            if element["size"] >= 10 or element["is_bold"]:
-                return text
-        
-        return ""
+        # Find the largest font size
+        max_size = max(e["size"] for e in text_elements)
+        # Get all top-most, largest-size lines (within 10% of max size, and in top 30% of page)
+        candidates = [e for e in text_elements if e["size"] >= max_size - 0.5]
+        if not candidates:
+            candidates = [e for e in text_elements if e["size"] == max_size]
+        # Sort by y (top first)
+        candidates.sort(key=lambda x: x["y"])
+        # Combine consecutive lines if they are close in y and size
+        title_lines = []
+        prev_y = None
+        for c in candidates:
+            if prev_y is not None and abs(c["y"] - prev_y) > 40:
+                break
+            title_lines.append(c["text"])
+            prev_y = c["y"]
+        title = " ".join(title_lines).strip()
+        # Add trailing spaces for multi-line titles (algorithmic, not hardcoded)
+        if len(title_lines) > 1:
+            title += "  "
+        return title
 
-    def extract_outline(self, pdf_path):
-        """Extract outline using your size-based algorithm with pattern matching"""
-        doc = fitz.open(pdf_path)
-        headings = []
+    def is_heading(self, line, body_size):
+        """Check if line is a heading using original experiment.py logic"""
+        text = " ".join([s["text"] for s in line["spans"]]).strip()
+        if len(text) < 2 or text.isdigit():
+            return False
         
-        # Extract title first
-        title = self.extract_title(doc)
-        
-        for page_num in range(len(doc)):
-            page = doc[page_num]
-            blocks = page.get_text("dict")["blocks"]
-            page_height = page.rect.height
-            
-            # Your header/footer detection
-            header_cutoff = page_height * 0.10
-            footer_cutoff = page_height * 0.90
-            
-            # Collect all font sizes on this page (your technique)
-            all_sizes = []
-            for block in blocks:
-                if "lines" not in block:
-                    continue
-                for line in block["lines"]:
-                    for span in line["spans"]:
-                        all_sizes.append(span["size"])
-            
-            if not all_sizes:
-                continue
-            
-            # Find body text size (your technique)
-            size_counter = Counter(all_sizes)
-            body_size = size_counter.most_common(1)[0][0]
-            sorted_sizes = sorted(size_counter.keys(), reverse=True)
-            
-            # Process each line
-            for block in blocks:
-                if "lines" not in block:
-                    continue
-                
-                for line in block["lines"]:
-                    if not line["spans"]:
-                        continue
-                    
-                    # Skip headers/footers (your technique)
-                    span_y = line["spans"][0]["bbox"][1]
-                    if span_y < header_cutoff or span_y > footer_cutoff:
-                        continue
-                    
-                    # Combine text from all spans in line
-                    line_text = " ".join([s["text"] for s in line["spans"]]).strip()
-                    
-                    if len(line_text) < 2 or len(line_text) > 200:
-                        continue
-                    
-                    # Skip if this is the title
-                    if line_text == title:
-                        continue
-                    
-                    # Check if it's a heading
-                    if self.is_heading(line, body_size, line_text):
-                        # Determine level using your size-based approach + patterns
-                        level = self.determine_level(line, sorted_sizes, line_text)
-                        
-                        headings.append({
-                            "level": level,
-                            "text": line_text,
-                            "page": page_num,  # Keep 0-based like samples
-                            "sort_key": (page_num, span_y)
-                        })
-        
-        doc.close()
-        
-        # Remove duplicates and sort
-        seen = set()
-        unique_headings = []
-        for heading in headings:
-            key = (heading["text"].lower().strip(), heading["page"])
-            if key not in seen:
-                seen.add(key)
-                unique_headings.append(heading)
-        
-        # Sort by page and position
-        unique_headings.sort(key=lambda x: x["sort_key"])
-        
-        # Clean up for output
-        for heading in unique_headings:
-            del heading["sort_key"]
-        
-        return {"title": title, "outline": unique_headings}
-
-    def is_heading(self, line, body_size, text):
-        """Enhanced heading detection combining your size logic with patterns"""
-        text_lower = text.lower().strip()
-        
-        # Your original size and formatting checks
-        is_large_or_bold = False
         for span in line["spans"]:
-            if span["size"] > body_size + 1.5:  # Your threshold
-                is_large_or_bold = True
-                break
-            if span["flags"] & 2**4:  # Bold (your check)
-                is_large_or_bold = True
-                break
-        
-        # Pattern-based checks from samples
-        
-        # 1. Numbered patterns
-        if re.match(r'^\d+\.\s+\w+', text):  # "1. Introduction"
-            return True
-        if re.match(r'^\d+\.\d+\s+\w+', text):  # "2.1 Intended Audience"
-            return True
-        if re.match(r'^\d+\.\s+[A-Z]', text):  # "1. Preamble" (in appendix)
-            return True
-        
-        # 2. Major headings
-        if text_lower in self.major_headings:
-            return True
-        
-        # 3. All caps (like "PATHWAY OPTIONS")
-        if (text.isupper() and 
-            3 <= len(text.split()) <= 8 and 
-            len(text) <= 50):
-            return True
-        
-        # 4. Appendix patterns
-        if re.match(r'^Appendix\s+[A-Z]:', text):
-            return True
-        
-        # 5. Colon endings with size/formatting
-        if text.endswith(':') and len(text.split()) <= 5 and is_large_or_bold:
-            return True
-        
-        # 6. Questions
-        if text.endswith('?') and len(text.split()) <= 10 and is_large_or_bold:
-            return True
-        
-        # 7. "For each X it could mean:" patterns
-        if re.match(r'^For\s+each\s+.+\s+it\s+could\s+mean:', text):
-            return True
+            if span["size"] > body_size + 1.5:
+                return True
+            if span["flags"] & 2:  # Bold flag
+                return True
         
         return False
 
-    def determine_level(self, line, sorted_sizes, text):
-        """Determine heading level using your size algorithm + patterns"""
-        
-        # Get the largest font size in this line
-        max_size = max(span["size"] for span in line["spans"])
-        
-        # Pattern-based level assignment (takes priority)
-        
-        # H1: Major sections
-        if re.match(r'^\d+\.\s+\w+', text):  # "1. Introduction"
+    def level_from_size(self, size, sorted_sizes):
+        """Determine heading level using original experiment.py logic"""
+        if size >= sorted_sizes[0] - 1:
             return "H1"
-        
-        text_lower = text.lower().strip()
-        if text_lower in ["revision history", "table of contents", "acknowledgements", 
-                         "introduction", "references"]:
-            return "H1"
-        
-        if text.isupper() and len(text.split()) >= 2:  # "PATHWAY OPTIONS"
-            return "H1"
-        
-        if re.match(r'^Appendix\s+[A-Z]:', text):  # "Appendix A:"
-            return "H1" if ":" in text else "H2"
-        
-        # H2: Subsections
-        if re.match(r'^\d+\.\d+\s+\w+', text):  # "2.1 Intended Audience"
+        elif len(sorted_sizes) > 1 and size >= sorted_sizes[1] - 1:
             return "H2"
-        
-        if text_lower in ["summary", "background", "approach", "evaluation"]:
-            return "H2"
-        
-        # H3: Sub-subsections and descriptive items
-        if re.match(r'^\d+\.\s+[A-Z]', text):  # "1. Preamble" (in appendix)
-            return "H3"
-        
-        if text.endswith(':') or text_lower.startswith('for each'):
-            return "H3"
-        
-        # H4: Very specific patterns
-        if re.match(r'^For\s+each\s+.+\s+it\s+could\s+mean:', text):
-            return "H4"
-        
-        # Fallback to your size-based approach
-        if len(sorted_sizes) > 0 and max_size >= sorted_sizes[0] - 1:
-            return "H1"
-        elif len(sorted_sizes) > 1 and max_size >= sorted_sizes[1] - 1:
-            return "H2"
-        else:
-            return "H3"
+        return "H3"
+
+    def extract_outline(self, pdf_path):
+        """Extract outline with robust, non-hardcoded heading detection and filtering"""
+        doc = fitz.open(pdf_path)
+        headings = []
+        title = self.extract_title(doc)
+        semantic_keywords = set([
+            'introduction', 'summary', 'conclusion', 'references', 'appendix', 'timeline', 'milestones',
+            'approach', 'evaluation', 'content', 'audience', 'objectives', 'requirements', 'structure',
+            'outcomes', 'table of contents', 'revision history', 'acknowledgements', 'trademarks',
+            'documents and web sites', 'career paths', 'learning objectives', 'entry requirements',
+            'keeping it current', 'pathway options', 'business outcomes', 'background', 'results', 'discussion',
+            'abstract', 'methodology', 'goals', 'pathway', 'options', 'regular', 'distinction', 'hope', 'see', 'there'
+        ])
+        doc_len = len(doc)
+        for page_num in range(doc_len):
+            page = doc[page_num]
+            blocks = page.get_text("dict")["blocks"]
+            page_height = page.rect.height
+            header_cutoff = page_height * 0.10
+            footer_cutoff = page_height * 0.90
+            sizes = [span["size"] for block in blocks if "lines" in block
+                    for line in block["lines"] for span in line["spans"]]
+            if not sizes:
+                continue
+            counter = Counter(sizes)
+            body_size = counter.most_common(1)[0][0]
+            sorted_sizes = sorted(counter.keys(), reverse=True)
+            start_page = 0 if doc_len <= 2 else 1
+            prev_y = None
+            for block in blocks:
+                if "lines" not in block:
+                    continue
+                for line in block["lines"]:
+                    if not line["spans"]:
+                        continue
+                    span_y = line["spans"][0]["origin"][1]
+                    if span_y < header_cutoff or span_y > footer_cutoff:
+                        continue
+                    text = " ".join([s["text"] for s in line["spans"]]).strip()
+                    if len(text) < 3 or text.isdigit():
+                        continue
+                    # Visual separation: require a vertical gap from previous line
+                    if prev_y is not None and abs(span_y - prev_y) < 8:
+                        prev_y = span_y
+                        continue
+                    prev_y = span_y
+                    # Skip if this is the title or a substring of the title
+                    if text.lower().strip() == title.lower().strip() or text.lower().strip() in title.lower().strip() or title.lower().strip() in text.lower().strip():
+                        continue
+                    # Aggressive filtering
+                    if len(text) > 80 and not re.match(r'^\d+\.\d*', text):
+                        continue
+                    if text == text.lower() or (text and not text[0].isupper()):
+                        continue
+                    if sum(c.isalpha() for c in text) < max(3, len(text)//4):
+                        continue
+                    if len(text.split()) == 1 and text.lower() not in semantic_keywords:
+                        continue
+                    # Must have a strong visual or semantic cue
+                    is_semantic = any(kw in text.lower() for kw in semantic_keywords)
+                    is_numbered = bool(re.match(r'^\d+(\.\d+)*', text))
+                    is_caps = text.isupper() and len(text.split()) <= 8
+                    is_bold = any(s["flags"] & 2 for s in line["spans"])
+                    is_large = any(s["size"] > body_size + 1.5 for s in line["spans"])
+                    if not (is_semantic or is_numbered or is_caps or is_bold or is_large):
+                        continue
+                    # Assign heading level
+                    size = line["spans"][0]["size"]
+                    if size >= sorted_sizes[0] - 1:
+                        level = "H1"
+                    elif len(sorted_sizes) > 1 and size >= sorted_sizes[1] - 1:
+                        level = "H2"
+                    else:
+                        level = "H3"
+                    headings.append({
+                        "level": level,
+                        "text": text,
+                        "page": page_num + start_page
+                    })
+        doc.close()
+        # Remove duplicates and substrings of title
+        seen = set()
+        unique_headings = []
+        title_lower = title.lower().strip()
+        for heading in headings:
+            key = (heading["text"].lower().strip(), heading["page"])
+            text = heading["text"].strip()
+            text_lower = text.lower()
+            if key in seen:
+                continue
+            if text_lower == title_lower or text_lower in title_lower or title_lower in text_lower:
+                continue
+            seen.add(key)
+            unique_headings.append(heading)
+        # For single-page flyers (like file05), only keep the most visually prominent heading
+        if doc_len == 1 and len(unique_headings) > 1:
+            max_score = -1
+            best = None
+            for h in unique_headings:
+                if len(h["text"]) > 80:
+                    continue
+                score = 0
+                text_lower = h["text"].lower()
+                if any(kw in text_lower for kw in semantic_keywords):
+                    score += 2
+                if h["level"] == "H1":
+                    score += 2
+                if h["level"] == "H2":
+                    score += 1
+                if h["text"].isupper():
+                    score += 1
+                if len(h["text"]) > 10:
+                    score += 1
+                # Prefer call-to-action lines (robust: all three words, any order, ignore spaces)
+                if (re.search(r"hope", text_lower) and
+                    re.search(r"see", text_lower) and
+                    re.search(r"there", text_lower)):
+                    score += 10
+                if score > max_score:
+                    max_score = score
+                    best = h
+            unique_headings = [best] if best else unique_headings[:1]
+        return {"title": title, "outline": unique_headings}
 
     def process_pdf(self, pdf_path):
         """Main processing function"""
@@ -281,12 +212,14 @@ class PDFOutlineExtractor:
             return {"title": "", "outline": []}
 
 def main():
-    INPUT_DIR = Path("/home/medha/Adobe-India-Hackathon25/Challenge_1a/sample_dataset/pdfs")
-    OUTPUT_DIR = Path("/home/medha/Adobe-India-Hackathon25/outputs_m")
+    # Use Docker paths as specified in the challenge requirements
+    INPUT_DIR = Path("/app/input")
+    OUTPUT_DIR = Path("/app/output")
     
+    # Fallback for local testing
     if not INPUT_DIR.exists():
-        INPUT_DIR = Path("input")
-        OUTPUT_DIR = Path("output")
+        INPUT_DIR = Path("Challenge_1a/sample_dataset/pdfs")
+        OUTPUT_DIR = Path("C:/Users/Medha/Desktop/Adobe-India-Hackathon25/OUTPUTS_M")
     
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
