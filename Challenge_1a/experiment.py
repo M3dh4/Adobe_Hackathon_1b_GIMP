@@ -4,7 +4,7 @@ import fitz
 from collections import Counter
 
 # Input PDF (hardcoded)
-PDF_NAME = "C:\\Users\\Afham Faiyaz Ahmad\\Desktop\\Adobe\\Adobe-India-Hackathon25\\Challenge_1a\\sample_dataset\\pdfs\\file01.pdf"  # change to file02.pdf etc as needed
+PDF_NAME = "/home/medha/Adobe-India-Hackathon25/Challenge_1a/sample_dataset/pdfs/file01.pdf"  # change to file02.pdf etc as needed
 PDF_PATH = os.path.join("Challenge_1a", "sample_dataset", "pdfs", PDF_NAME)
 
 # Root-level output folder
