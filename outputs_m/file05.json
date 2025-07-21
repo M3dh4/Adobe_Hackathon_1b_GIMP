@@ -4,7 +4,12 @@
         {
             "level": "H3",
             "text": "PIGEON FORGE, TN 37863",
-            "page": 0
+            "page": 1
+        },
+        {
+            "level": "H3",
+            "text": "(NEAR DIXIE STAMPEDE  ON  THE PARKWAY)",
+            "page": 1
         }
     ]
 }
