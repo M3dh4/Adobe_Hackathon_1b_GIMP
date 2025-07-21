@@ -1,0 +1,7 @@
+pymupdf
+scikit-learn
+numpy
+transformers
+torch
+# layoutlmv3 (optional, if model size allows)
+# donut (optional, if model size allows) 

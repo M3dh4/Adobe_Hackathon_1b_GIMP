@@ -46,19 +46,22 @@ class PDFOutlineExtractor:
     def extract_title(self, doc):
         first = doc[0]
         blocks = first.get_text("dict")['blocks']
-        max_size = 0
-        title_line = None
+        # Find the largest font size on the first page
+        sizes = [span["size"] for b in blocks if "lines" in b for line in b["lines"] for span in line["spans"]]
+        if not sizes:
+            return "Untitled Document"
+        max_size = max(sizes)
+        # Concatenate all text in the largest font size
+        title_spans = []
         for b in blocks:
             if "lines" not in b:
                 continue
             for line in b["lines"]:
                 for span in line["spans"]:
-                    if span["size"] > max_size:
-                        max_size = span["size"]
-                        title_line = line
-        if title_line:
-            return " ".join([span["text"] for span in title_line["spans"]]).strip() or "Untitled Document"
-        return "Untitled Document"
+                    if span["size"] == max_size:
+                        title_spans.append(span["text"].strip())
+        title = " ".join(title_spans).strip()
+        return title or "Untitled Document"
 
     def is_heading_heuristic(self, line, body_size):
         text = " ".join([s["text"] for s in line["spans"]]).strip()
@@ -134,6 +137,9 @@ class PDFOutlineExtractor:
             counter = Counter(sizes)
             body = counter.most_common(1)[0][0]
             sorted_sizes = sorted(counter.keys(), reverse=True)
+            # Collect all headings for this page
+            page_headings = []
+            special_heading_on_page = None
             for b in blocks:
                 if "lines" not in b:
                     continue
@@ -148,14 +154,27 @@ class PDFOutlineExtractor:
                         continue
                     if self.is_heading_combined(line, body):
                         lvl = self.level_from_size(line["spans"][0]["size"], sorted_sizes)
-                        headings.append({"level": lvl, "text": text, "page": pno + 1})
-                        # Track heading text count (case-insensitive, stripped)
-                        key = text.lower().strip()
-                        heading_counter[key] = heading_counter.get(key, 0) + 1
+                        heading_dict = {"level": lvl, "text": text, "page": pno + 1}
+                        # Check for special heading in first 5 pages
+                        if pno < 5:
+                            text_lower = text.lower().strip(":. ")
+                            if text_lower in ["contents", "content", "table of contents"]:
+                                special_heading_on_page = heading_dict
+                        page_headings.append(heading_dict)
+            # If special heading found on this page, only keep it
+            if special_heading_on_page is not None:
+                headings.append(special_heading_on_page)
+                key = special_heading_on_page["text"].lower().strip()
+                heading_counter[key] = heading_counter.get(key, 0) + 1
+            else:
+                for h in page_headings:
+                    headings.append(h)
+                    key = h["text"].lower().strip()
+                    heading_counter[key] = heading_counter.get(key, 0) + 1
+        doc.close()
         # Exclude headings that appear on more than 50% of pages (likely headers/footers)
         min_count = max(2, int(num_pages * 0.5) + 1)
         filtered_headings = [h for h in headings if heading_counter[h["text"].lower().strip()] < min_count]
-        doc.close()
         return {"title": title, "outline": filtered_headings}
 
     def process_pdf(self, pdf_path):
@@ -174,7 +193,7 @@ def main():
     # Fallback for local testing
     if not INPUT_DIR.exists():
         INPUT_DIR = Path("Challenge_1a/sample_dataset/pdfs")
-        OUTPUT_DIR = Path("C:/Users/Medha/Desktop/Adobe-India-Hackathon25/OUTPUTS_M")
+        OUTPUT_DIR = Path("C:/Users/Afham Faiyaz Ahmad/Desktop/Adobe/Adobe-India-Hackathon25/OUTPUTS_M1")
     
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
