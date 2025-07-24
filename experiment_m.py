@@ -193,7 +193,7 @@ def main():
     # Fallback for local testing
     if not INPUT_DIR.exists():
         INPUT_DIR = Path("Challenge_1a/sample_dataset/pdfs")
-        OUTPUT_DIR = Path("C:/Users/Afham Faiyaz Ahmad/Desktop/Adobe/Adobe-India-Hackathon25/OUTPUTS_M1")
+        OUTPUT_DIR = Path("C:/Users/garvt/OneDrive/Desktop/Adobe-India-Hackathon25/OUTPUTS_M1")
     
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     
