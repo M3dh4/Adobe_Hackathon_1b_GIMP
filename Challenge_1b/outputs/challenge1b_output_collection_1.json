@@ -11,65 +11,65 @@
         ],
         "persona": "Travel Planner",
         "job_to_be_done": "Plan a trip of 4 days for a group of 10 college friends.",
-        "processing_timestamp": "2025-07-28T00:47:18.320852"
+        "processing_timestamp": "2025-07-28T02:09:55.798310"
     },
     "extracted_sections": [
         {
-            "document": "South of France - Restaurants and Hotels.pdf",
-            "section_title": "luxurious experiences, this guide will help you find the perfect restaurants and hotels for your",
-            "importance_rank": 1,
-            "page_number": 1
-        },
-        {
-            "document": "South of France - Cuisine.pdf",
-            "section_title": "Culinary Experiences",
-            "importance_rank": 2,
-            "page_number": 6
-        },
-        {
             "document": "South of France - Tips and Tricks.pdf",
             "section_title": "Packing for a trip to the South of France involves considering the season, planned activities,",
-            "importance_rank": 3,
+            "importance_rank": 1,
             "page_number": 9
         },
         {
-            "document": "South of France - Things to Do.pdf",
-            "section_title": "Water Activities",
-            "importance_rank": 4,
+            "document": "South of France - Cuisine.pdf",
+            "section_title": "Must-Visit Restaurants",
+            "importance_rank": 2,
             "page_number": 4
         },
         {
-            "document": "South of France - Things to Do.pdf",
-            "section_title": "take you through a variety of activities and must-see attractions to help you plan an",
+            "document": "South of France - Tips and Tricks.pdf",
+            "section_title": "General Packing Tips and Tricks",
+            "importance_rank": 3,
+            "page_number": 2
+        },
+        {
+            "document": "South of France - Cities.pdf",
+            "section_title": "Key Attractions",
+            "importance_rank": 4,
+            "page_number": 3
+        },
+        {
+            "document": "South of France - Cities.pdf",
+            "section_title": "Key Attractions",
             "importance_rank": 5,
-            "page_number": 1
+            "page_number": 5
         }
     ],
     "subsection_analysis": [
-        {
-            "document": "South of France - Restaurants and Hotels.pdf",
-            "refined_text": "luxurious experiences, this guide will help you find the perfect restaurants and hotels for your trip.",
-            "page_number": 1
-        },
-        {
-            "document": "South of France - Cuisine.pdf",
-            "refined_text": "Culinary Experiences In addition to dining at top restaurants, there are several culinary experiences you should consider: • Cooking Classes: Many towns and cities in the South of France oﬀer cooking classes where you can learn to prepare traditional dishes like bouillabaisse, ratatouille, and tarte tropézienne. These classes are a great way to immerse yourself in the local culture and gain hands-on experience with regional recipes. Some classes even include a visit to a local market to shop for fresh ingredients. • Food Markets: Visit local markets such as the Cours Saleya Market in Nice or the Marché Forville in Cannes to sample fresh produce, cheeses, and charcuterie. These markets are a feast for the senses, with stalls overflowing with colorful fruits and vegetables, fragrant herbs, and artisanal product",
-            "page_number": 6
-        },
         {
             "document": "South of France - Tips and Tricks.pdf",
             "refined_text": "Packing for a trip to the South of France involves considering the season, planned activities, and the needs of both adults and children. By following this comprehensive guide and incorporating the tips and tricks provided, you'll be well-prepared for a comfortable and enjoyable trip. Remember to pack light, versatile clothing, and essential items to make the most of your travel experience. Bon voyage!",
             "page_number": 9
         },
         {
-            "document": "South of France - Things to Do.pdf",
-            "refined_text": "Water Activities • Ardèche River : Paddle through the stunning Ardèche Gorge. • Dordogne River : Enjoy a leisurely canoe trip, passing by medieval castles and charming villages. • Ubaye River : Experience white-water rafting for an adrenaline rush. • Gorges du Verdon : Rent a kayak or paddleboat to explore the turquoise waters. • Lake Sainte-Croix : Enjoy swimming, sailing, and windsurfing on this beautiful lake. • Lake Serre-Ponçon : Try water skiing or wakeboarding on one of the largest artificial lakes in Europe. • Cévennes National Park : Go canyoning in the rugged terrain of this beautiful park.",
+            "document": "South of France - Cuisine.pdf",
+            "refined_text": "Must-Visit Restaurants To truly experience the culinary delights of the South of France, here are some restaurants you should consider visiting: • Le Petit Nice Passedat (Marseille): A three-Michelin-starred restaurant oﬀering exquisite seafood dishes and stunning views of the Mediterranean. Chef Gérald Passedat is known for his innovative approach to seafood, creating dishes that are both visually stunning and incredibly flavorful. The restaurant's location on the cliﬀs overlooking the sea adds to the overall dining experience. • La Chèvre d'Or (Èze): Located in a medieval village, this two-Michelin-starred restaurant serves refined Provençal cuisine with breathtaking views of the French Riviera. The restaurant's terrace oﬀers panoramic views of the Mediterranean, making it the perfect spot for a romantic dinn",
             "page_number": 4
         },
         {
-            "document": "South of France - Things to Do.pdf",
-            "refined_text": "take you through a variety of activities and must-see attractions to help you plan an unforgettable trip.",
-            "page_number": 1
+            "document": "South of France - Tips and Tricks.pdf",
+            "refined_text": "General Packing Tips and Tricks • Layering:  The weather can vary, so pack layers to stay comfortable in diﬀerent temperatures. • Versatile Clothing:  Choose items that can be mixed and matched to create multiple outfits, helping you pack lighter. • Packing Cubes:  Use packing cubes to organize your clothes and maximize suitcase space. • Roll Your Clothes:  Rolling clothes saves space and reduces wrinkles. • Travel-Sized Toiletries:  Bring travel-sized toiletries to save space and comply with airline regulations. • Reusable Bags:  Pack a few reusable bags for laundry, shoes, or shopping. • First Aid Kit:  Include a small first aid kit with band-aids, antiseptic wipes, and any necessary medications. • Copies of Important Documents:  Make copies of your passport, travel insurance, and other important documents. Keep them",
+            "page_number": 2
+        },
+        {
+            "document": "South of France - Cities.pdf",
+            "refined_text": "Key Attractions • Old Port (Vieux-Port) : The heart of Marseille, the Old Port has been a bustling harbor for over 2,600 years. Today, it is a lively area filled with cafes, restaurants, and markets. • Basilica of Notre-Dame de la Garde : This iconic basilica, perched on a hill overlooking the city, oﬀers panoramic views of Marseille and the Mediterranean Sea. Built in the 19th century, it is a symbol of the city's maritime heritage. • MuCEM (Museum of European and Mediterranean Civilizations) : This modern museum explores the cultural history of the Mediterranean region through a variety of exhibits and interactive displays. • Le Panier : The oldest district in Marseille, Le Panier is a maze of narrow streets, colorful buildings, and historic landmarks. It's a great place to explore the city's past and",
+            "page_number": 3
+        },
+        {
+            "document": "South of France - Cities.pdf",
+            "refined_text": "Key Attractions • Promenade des Anglais : This famous seaside promenade, built in the 19th century, is perfect for a leisurely stroll along the coast. It oﬀers stunning views of the Mediterranean and is lined with cafes and hotels. • Castle Hill (Colline du Château) : This hilltop park oﬀers panoramic views of Nice and the Mediterranean. It was once the site of a medieval castle, which was destroyed in the 18th century. • Old Town (Vieux Nice) : The historic center of Nice is a labyrinth of narrow streets, baroque churches, and bustling markets. Don't miss the Cours Saleya market, where you can find fresh produce, flowers, and local delicacies. • Matisse Museum : Dedicated to the works of Henri Matisse, who spent much of his life in Nice, this museum features a comprehensive collection of his paintings,",
+            "page_number": 5
         }
     ]
 }

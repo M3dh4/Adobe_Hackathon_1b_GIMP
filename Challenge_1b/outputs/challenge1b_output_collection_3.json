@@ -13,65 +13,65 @@
         ],
         "persona": "Food Contractor",
         "job_to_be_done": "Prepare a vegetarian buffet-style dinner menu for a corporate gathering, including gluten-free items.",
-        "processing_timestamp": "2025-07-28T00:48:00.990941"
+        "processing_timestamp": "2025-07-28T02:10:32.297069"
     },
     "extracted_sections": [
         {
-            "document": "Dinner Ideas - Sides_3.pdf",
-            "section_title": "Macaroni and Cheese",
-            "importance_rank": 1,
-            "page_number": 8
-        },
-        {
-            "document": "Dinner Ideas - Mains_3.pdf",
-            "section_title": "Vegetable Lasagna",
-            "importance_rank": 2,
-            "page_number": 8
-        },
-        {
             "document": "Dinner Ideas - Sides_1.pdf",
             "section_title": "Baba Ganoush",
-            "importance_rank": 3,
+            "importance_rank": 1,
             "page_number": 4
         },
         {
-            "document": "Dinner Ideas - Mains_1.pdf",
-            "section_title": "2 tablespoons vegetable oil",
-            "importance_rank": 4,
+            "document": "Dinner Ideas - Sides_2.pdf",
+            "section_title": "Falafel",
+            "importance_rank": 2,
             "page_number": 7
         },
         {
-            "document": "Dinner Ideas - Mains_1.pdf",
-            "section_title": "2 tablespoons vegetable oil",
+            "document": "Breakfast Ideas.pdf",
+            "section_title": "Breakfast Pizza",
+            "importance_rank": 3,
+            "page_number": 7
+        },
+        {
+            "document": "Lunch Ideas.pdf",
+            "section_title": "Turkey and Cheese Roll-Ups",
+            "importance_rank": 4,
+            "page_number": 6
+        },
+        {
+            "document": "Breakfast Ideas.pdf",
+            "section_title": "Ingredients:",
             "importance_rank": 5,
-            "page_number": 9
+            "page_number": 2
         }
     ],
     "subsection_analysis": [
-        {
-            "document": "Dinner Ideas - Sides_3.pdf",
-            "refined_text": "Macaroni and Cheese  Ingredients : o   2 cups elbow macaroni o   2 cups milk o   2 tablespoons butter o   2 tablespoons flour o   2 cups shredded cheddar cheese o   1 teaspoon salt o   1/2 teaspoon pepper  Instructions : o   Cook macaroni according to package instructions, then drain. o   Melt butter in a saucepan, stir in flour to make a roux. o   Gradually add milk, stirring constantly until thickened. o   Add cheese, salt, and pepper, stir until melted. o   Combine cheese sauce with macaroni. o   Serve warm.  Manakish  Ingredients : o   2 1/4 teaspoons active dry yeast o   1 teaspoon sugar o   1 cup warm water o   3 cups flour o   1 teaspoon salt o   1/4 cup olive oil o   1/4 cup za'atar  Instructions : o   Dissolve yeast and sugar in warm water, let sit until foamy. o   Mix flour and salt in a bowl,",
-            "page_number": 8
-        },
-        {
-            "document": "Dinner Ideas - Mains_3.pdf",
-            "refined_text": "Vegetable Lasagna Ingredients:  9 lasagna noodles, cooked  1 small onion, diced  2 cloves garlic, minced  1 zucchini, sliced",
-            "page_number": 8
-        },
         {
             "document": "Dinner Ideas - Sides_1.pdf",
             "refined_text": "Baba Ganoush  Ingredients : o   2 eggplants o   1/4 cup tahini o   1/4 cup lemon juice o   2 cloves garlic o   1/4 cup olive oil o   1 teaspoon salt  Instructions : o   Roast eggplants until soft, then peel and mash. o   Blend mashed eggplant, tahini, lemon juice, minced garlic, and salt in a food processor. o   Slowly add olive oil while blending until smooth. o   Serve with a drizzle of olive oil.  Baked Beans  Ingredients : o   4 cups cooked navy beans o   1 small onion o   1/2 cup molasses o   1/4 cup brown sugar o   1/4 cup ketchup o   1 tablespoon mustard o   1 teaspoon salt o   1/2 teaspoon pepper  Instructions : o   Preheat oven to 350°F (175°C). o   Sauté diced onion until translucent. o   Mix beans, onion, molasses, brown sugar, ketchup, mustard, salt, and pepper in a baking dish. o   Ba",
             "page_number": 4
         },
         {
-            "document": "Dinner Ideas - Mains_1.pdf",
-            "refined_text": "2 tablespoons vegetable oil Instructions:  Soak rice noodles in warm water until softened, then drain.  Sauté shrimp or chicken in vegetable oil until cooked, then set aside.  Scramble eggs in the same pan.  Add noodles, fish sauce, tamarind paste, sugar, and lime juice, stir to combine.  Add bean sprouts, cooked shrimp or chicken, and chopped green onions.  Garnish with chopped peanuts and serve.    Beef Bourguignon Ingredients:  2 pounds beef chuck, cut into cubes  1 small onion, diced  2 cloves garlic, minced  1 cup red wine  2 cups beef broth  1 cup mushrooms, sliced  1 cup carrots, sliced  1 cup pearl onions  2 tablespoons tomato paste  2 tablespoons flour  2 tablespoons butter  1 teaspoon thyme  1 bay leaf  Salt and pepper to taste Instructions:  Preheat oven to 350°F (175°C).  In a large",
+            "document": "Dinner Ideas - Sides_2.pdf",
+            "refined_text": "Falafel  Ingredients : o   1 can chickpeas o   1 small onion o   2 cloves garlic o   1/4 cup parsley o   1 teaspoon cumin o   1 teaspoon coriander o   1 teaspoon salt o   1/4 cup flour o   Oil for frying  Instructions : o   Drain and rinse chickpeas. o   Blend chickpeas, diced onion, minced garlic, chopped parsley, cumin, coriander, and salt in a food processor. o   Add flour and mix until combined. o   Form mixture into balls and fry in hot oil until golden.",
             "page_number": 7
         },
         {
-            "document": "Dinner Ideas - Mains_1.pdf",
-            "refined_text": "2 tablespoons vegetable oil  Salt and pepper to taste  Chopped cilantro for garnish Instructions:  In a bowl, mix yogurt, lemon juice, minced garlic, grated ginger, cumin, coriander, turmeric, paprika, and garam masala.  Marinate chicken cubes in the mixture for at least 1 hour.  In a large skillet, heat vegetable oil over medium heat.  Cook diced onion until translucent.  Add marinated chicken and cook until browned.  Stir in diced tomatoes and simmer for 20 minutes.  Add heavy cream and simmer for an additional 10 minutes.  Season with salt and pepper to taste.  Garnish with chopped cilantro and serve.    Eggplant Parmesan Ingredients:",
-            "page_number": 9
+            "document": "Breakfast Ideas.pdf",
+            "refined_text": "Breakfast Pizza Ingredients: • 1 pre-made pizza crust • 1/2 cup marinara sauce • 1 cup shredded mozzarella cheese • 2 large eggs • 1/4 cup cooked sausage or bacon • 1/4 cup diced bell pepper",
+            "page_number": 7
+        },
+        {
+            "document": "Lunch Ideas.pdf",
+            "refined_text": "Turkey and Cheese Roll-Ups Ingredients: • 4 slices turkey breast • 4 slices cheese (such as cheddar or Swiss) • 1/2 cup baby spinach • 1/4 cup hummus Instructions: • Lay a slice of turkey flat and spread with hummus. • Place a slice of cheese and a few spinach leaves on top. • Roll up tightly and repeat with remaining ingredients.    Mediterranean Chickpea Salad Ingredients: • 1 can chickpeas, drained and rinsed • 1/2 cup cherry tomatoes, halved • 1/2 cucumber, diced • 1/4 cup red onion, finely chopped • 1/4 cup feta cheese, crumbled • 2 tablespoons olive oil • 1 tablespoon lemon juice • Salt and pepper to taste Instructions: • In a large bowl, combine the chickpeas, tomatoes, cucumber, red onion, and feta cheese. • Drizzle with olive oil and lemon juice. • Season with salt and pepper, then toss to combine.",
+            "page_number": 6
+        },
+        {
+            "document": "Breakfast Ideas.pdf",
+            "refined_text": "Ingredients: • 1 cup all-purpose flour • 2 tablespoons sugar • 1 teaspoon baking powder • 1/2 teaspoon baking soda • 1/4 teaspoon salt • 1 cup buttermilk • 1 large egg • 2 tablespoons melted butter • 1 teaspoon vanilla extract Instructions: • In a bowl, whisk together flour, sugar, baking powder, baking soda, and salt. • In another bowl, combine buttermilk, egg, melted butter, and vanilla extract. • Pour the wet ingredients into the dry ingredients and stir until just combined. • Heat a non-stick skillet over medium heat and lightly grease it. • Pour 1/4 cup of batter onto the skillet for each pancake. • Cook until bubbles form on the surface, then flip and cook until golden brown. • Serve with syrup and your favorite toppings.    Scrambled Eggs Ingredients: • 4 large eggs • 1/4 cup milk • Salt and pe",
+            "page_number": 2
         }
     ]
 }
