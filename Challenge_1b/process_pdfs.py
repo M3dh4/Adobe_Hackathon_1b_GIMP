@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Challenge 1B: Multi-Collection PDF Analysis with Dynamic Collection Detection
-Supports any number of collections automatically
-"""
-
 import os
 import json
 import re
@@ -22,9 +16,7 @@ logger = logging.getLogger(__name__)
 
 class MultilingualChallenge1B:
     def __init__(self):
-        """Initialize multilingual Challenge 1B processor"""
         try:
-            # Set offline mode for Docker
             os.environ['TRANSFORMERS_OFFLINE'] = '1'
             
             self.torch = torch
@@ -169,7 +161,6 @@ class MultilingualChallenge1B:
                 logger.info(f"Detected {lang} via script pattern")
                 return lang
         
-        # For Latin scripts, use character-based detection
         text_lower = text_sample.lower()
         
         if any(char in text_lower for char in ['ñ', 'á', 'é', 'í', 'ó', 'ú', '¿', '¡']):
@@ -198,7 +189,7 @@ class MultilingualChallenge1B:
         return keywords_by_lang.get(detected_lang, keywords_by_lang.get('en', []))
 
     def _embed_texts(self, texts: Union[str, List[str]]) -> np.ndarray:
-        """Embed texts using BERT model - your exact method"""
+        """Embed texts using BERT model """
         if isinstance(texts, str):
             texts = [texts]
         
@@ -209,7 +200,7 @@ class MultilingualChallenge1B:
         return outputs.last_hidden_state[:, 0, :].cpu().numpy()
 
     def load_input_configuration(self, input_file: Path) -> Dict[str, Any]:
-        """Load input configuration from JSON file - your exact method"""
+        """Load input configuration from JSON file"""
         try:
             with open(input_file, 'r', encoding='utf-8') as f:
                 return json.load(f)
@@ -219,13 +210,10 @@ class MultilingualChallenge1B:
 
     def is_valid_section_heading(self, text: str, line_info: Dict, body_size: float, 
                                 persona: str, detected_lang: str = 'en') -> bool:
-        """Enhanced section heading detection with multilingual support"""
-        # Your exact length checks
         word_count = len(text.split())
         if word_count < 1 or word_count > 15 or len(text) < 3:
             return False
         
-        # Your exact skip patterns
         skip_patterns = [
             r"^\d+$", r"^page \d+", r"^figure \d+", r"^table \d+",
             r"^copyright", r"^all rights reserved", r"^www\.", r"^http"
@@ -233,7 +221,6 @@ class MultilingualChallenge1B:
         if any(re.search(pattern, text.lower()) for pattern in skip_patterns):
             return False
         
-        # Your exact font-based detection
         spans = line_info.get("spans", [])
         if spans:
             font_size = spans[0].get("size", body_size)
