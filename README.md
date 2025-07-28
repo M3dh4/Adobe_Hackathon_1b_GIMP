@@ -1,41 +1,90 @@
-# Adobe India Hackathon 2025
+# Technical Overview of PDF Processing Algorithms
 
-## Welcome to the "Connecting the Dots" Challenge
-
-### Rethink Reading. Rediscover Knowledge
-
-What if every time you opened a PDF, it didn't just sit there—it spoke to you, connected ideas, and narrated meaning across your entire library?
-
-That's the future we're building — and we want you to help shape it.
-
-In the Connecting the Dots Challenge, your mission is to reimagine the humble PDF as an intelligent, interactive experience—one that understands structure, surfaces insights, and responds to you like a trusted research companion.
-
-### The Journey Ahead
-
-**Round 1:**
-Kick things off by building the brains — extract structured outlines from raw PDFs with blazing speed and pinpoint accuracy. Then, power it up with on-device intelligence that understands sections and links related ideas together.
-
-**Round 2:**
-It's showtime! Build a beautiful, intuitive reading webapp using Adobe's PDF Embed API. You will be using your Round 1 work to design a futuristic webapp.
-
-### Why This Matters
-
-In a world flooded with documents, what wins is not more content — it's context. You're not just building tools — you're building the future of how we read, learn, and connect. No matter your background — ML hacker, UI builder, or insight whisperer — this is your stage.
-
-Are you in?
-
-It's time to read between the lines. Connect the dots. And build a PDF experience that feels like magic. Let's go.
+This document provides an algorithmic explanation of two Python scripts for multilingual PDF content extraction and relevance scoring.
 
 ---
 
-## Challenge Solutions
+## 1. Multilingual PDF Outline Extraction
 
-### [Challenge 1a: PDF Processing Solution](./Challenge_1a/README.md)
-Basic PDF processing with Docker containerization and structured data extraction.
+### **Objective:**
 
-### [Challenge 1b: Multi-Collection PDF Analysis](./Challenge_1b/README.md)
-Advanced persona-based content analysis across multiple document collections.
+Extract the document title and a structured outline of headings from PDFs in various languages.
+
+### **Algorithm Workflow:**
+
+#### **Model and Template Loading**
+
+* Loads a local, multilingual BERT model to produce embeddings for text.
+* Computes and caches vector representations for common heading templates (e.g., "Introduction", "Summary") in several languages.
+
+#### **Language Detection**
+
+* Analyzes script patterns in PDF text samples using regular expressions and language heuristics to determine the document’s language.
+* Adjusts processing rules (such as templates and regexes) accordingly.
+
+#### **Title Extraction**
+
+* On the first page, identifies the largest font size in use.
+* Concatenates all text fragments using this font to estimate the document’s title, avoiding substring repetitions.
+
+#### **Outline Parsing**
+
+* On each page, collects all text spans, filtering out headers and footers.
+* For each text line, evaluates font size, boldness, and placement to identify heading-like candidates.
+* Compares the embedding of each candidate heading with the cached heading templates for the detected language using cosine similarity.
+* Heading level (H1/H2/H3) is inferred from font size hierarchy.
+* Excludes non-informative headings (like "Table of Contents") and adjacent duplicates.
+
+### **Output:**
+
+Produces a JSON listing the document title and all extracted headings, each annotated with its page and level.
 
 ---
 
-**Note**: Each challenge directory contains detailed documentation and implementation details. Please refer to the individual README files for comprehensive information about each solution.
+## 2. PDF Collection Section Relevance Extraction
+
+### **Objective:**
+
+From multiple PDF collections and a persona/job configuration, extract and rank relevant sections for the given persona.
+
+### **Algorithm Workflow:**
+
+#### **Initialization**
+
+* Loads a compact multilingual BERT model and, if available, a summarization model (both local).
+* Loads persona/job description and sets up heading/keyword regexes appropriate for the supported languages.
+
+#### **Collection & Language Detection**
+
+* Scans for valid PDF collections (identified by configuration files and docs).
+* Detects language using script and regex analysis, adapting section extraction to the main document language.
+
+#### **Section Heading Identification**
+
+* Iterates through PDF pages, skipping headers/footers.
+* Considers text lines as candidate headings based on font size, length, and persona/job-related regex matches.
+
+#### **Relevance Scoring**
+
+* Calculates cosine similarity between embeddings of candidate headings and the persona/job description.
+* Adds bonus scores for keyword matches from the persona/job config.
+
+#### **Post-processing**
+
+* Deduplicates sections by document and heading.
+* Selects top N most relevant sections across all documents.
+
+### **Output:**
+
+For each collection, creates a JSON with:
+
+* Metadata
+* Ranked relevant sections (heading, page, score)
+* Text snippets near each heading
+
+---
+
+> **Note:**
+> Both scripts exclusively use **offline models** and are built for robust **multilingual PDF analysis**.
+
+---
